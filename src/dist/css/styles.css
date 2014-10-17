@@ -1,0 +1,32 @@
+body {
+  background-color: #dddddd;
+  background-color: red;
+  margin: 0;
+  padding: 0;
+}
+
+#memorobelia {
+  margin-left: auto;
+  margin-right: auto;
+  cursor: pointer;
+}
+
+.dialog {
+	position: absolute;
+	top: 40px;
+	background-color: #ccc;
+	border: 2px solid #999;
+	padding: 10px;
+	margin: auto;
+	width: 80%;
+	max-width: 800px;
+}
+
+p {
+	margin: 0;
+	font-size: 1.2em;
+}
+
+a {}
+
+a.option {}
