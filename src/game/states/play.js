@@ -60,14 +60,14 @@ Play.prototype = {
 	update: function() {
 		this.checkConditions();
 
-		var speed = 1000;
+		var speed = 600;
 		var vel = {x:0, y:0};
 
 		if(!this.dialog.active) {
 			if(this.game.input.activePointer.isDown) {
 				var vec = new Vector(
-					this.player.body.x - this.game.input.worldX,
-					this.player.body.y - this.game.input.worldY
+					this.player.body.x - this.game.input.worldX + (this.player.body.width/2),
+					this.player.body.y - this.game.input.worldY + (this.player.body.height/2)
 				);
 
 				vec.x = (vec.x/vec.length()) * speed * -1;
@@ -76,7 +76,6 @@ Play.prototype = {
 				vel.x = vec.x;
 				vel.y = vec.y;
 			}
-
 
 			if(this.cursors.left.isDown) {
 				vel.x -= speed;
@@ -119,9 +118,6 @@ Play.prototype = {
 		this.game.camera.y = this.lerp(0.3, this.game.camera.y, this.player.y - (this.game.height/2))
 	},
 	render: function() {
-		if(this.debug === true) {
-			this.game.debug.body(this.player);
-		}
 	},
     createCursorKeys: function () {
         return {

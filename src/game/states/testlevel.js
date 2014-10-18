@@ -2,11 +2,13 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 20:49:29
+* @Last Modified time: 2014-10-18 22:44:42
 */
 
 var PlayState = require('./play');
 var Info = require('../Info');
+var NPC = require('../prefabs/NPC');
+var Knife = require('../prefabs/Knife');
 
 function Level() {}
 
@@ -30,19 +32,39 @@ Level.prototype.create = function() {
 	PlayState.prototype.create.call(this);
 	this.game.stage.backgroundColor = '#dddddd';
 
-	/*this.speechbubble.say([
-		'Hi there!',
-		'And welcome to this game',
-		'...',
-		'Tutorial time!',
-		'First',
-		'Move by pressing the W, A, S, D keys',
-	], 2000, function() {
-		self.info.doneTutorialAnnoucing	=  new Date().getTime();	
-	});*/
+	this.knife = new Knife(this.game,  this.player);
+	this.entities.add(this.knife);
+
+	var npc = new NPC(this.game,  (1920/2) - 50, 1920/2, this.player);
+	this.entities.add(npc);
+
+
+	this.speechbubble.say([
+		'Stabby time!'
+	], 2000);
 }
 
+var lastAdd = 0;
+
 Level.prototype.checkConditions = function() {
+	var self = this;
+
+
+	if(new Date().getTime() - lastAdd > 4000) {
+		var amount = Math.round(Math.random() * 5) + 1;
+		console.log(amount);
+		for(var x = 0; x <= amount; x++) {
+			console.log('spawn!!');
+			var npc = new NPC(
+				self.game, 
+				(self.player.x-300) + Math.random() * 600, 
+				(self.player.y-300) + Math.random() * 600, 
+				self.player
+			);
+			self.entities.add(npc);
+		}
+		lastAdd = new Date().getTime();
+	}
 
 	var self = this;
 	var timeSinceTutDone = new Date().getTime() - this.info.doneTutorialAnnoucing;

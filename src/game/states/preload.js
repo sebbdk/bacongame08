@@ -17,6 +17,7 @@ Preload.prototype = {
     this.load.image('collectable', 'assets/m1.png');
     this.load.image('inventorySlot', 'assets/inventorySlot.png');
     this.load.image('background', 'assets/mosaic.png');
+    this.load.image('knife', 'assets/knife.png');
 
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
   },
