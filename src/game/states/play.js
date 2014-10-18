@@ -5,6 +5,7 @@ var Inventory = require('../prefabs/inventory');
 var Dialog = require('../prefabs/dialog');
 var Speechbubble = require('../prefabs/speechbubble');
 var Info = require('../Info');
+var Vector = require('../Vector');
 
 function Play() {}
 
@@ -26,7 +27,7 @@ Play.prototype = {
 		this.entities.add(this.player);
 
 		//setup controls
-		this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
+		//this.game.input.keyboard.addKeyCapture([Phaser.Keyboard.SPACEBAR]);
 
 		this.cursors = this.createCursorKeys();
 
@@ -59,10 +60,24 @@ Play.prototype = {
 	update: function() {
 		this.checkConditions();
 
-		var speed = 150;
+		var speed = 1000;
 		var vel = {x:0, y:0};
 
 		if(!this.dialog.active) {
+			if(this.game.input.activePointer.isDown) {
+				var vec = new Vector(
+					this.player.body.x - this.game.input.worldX,
+					this.player.body.y - this.game.input.worldY
+				);
+
+				vec.x = (vec.x/vec.length()) * speed * -1;
+				vec.y = (vec.y/vec.length()) * speed * -1; 
+
+				vel.x = vec.x;
+				vel.y = vec.y;
+			}
+
+
 			if(this.cursors.left.isDown) {
 				vel.x -= speed;
 			}
@@ -100,12 +115,8 @@ Play.prototype = {
 
 		this.entities.sort('y');
 
-		this.game.camera.x = this.lerp(0.4, this.game.camera.x, this.player.x - (this.game.width/2))
-		this.game.camera.y = this.lerp(0.4, this.game.camera.y, this.player.y - (this.game.height/2))
-
-	},
-	clickListener: function() {
-		this.game.state.start('gameover');
+		this.game.camera.x = this.lerp(0.3, this.game.camera.x, this.player.x - (this.game.width/2))
+		this.game.camera.y = this.lerp(0.3, this.game.camera.y, this.player.y - (this.game.height/2))
 	},
 	render: function() {
 		if(this.debug === true) {

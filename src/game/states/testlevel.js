@@ -2,12 +2,11 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-09-18 00:27:24
+* @Last Modified time: 2014-10-18 20:49:29
 */
 
 var PlayState = require('./play');
 var Info = require('../Info');
-var Collectable = require('../prefabs/collectable');
 
 function Level() {}
 
@@ -23,25 +22,15 @@ Level.prototype.update = function() {
 	var self = this;
 
 	PlayState.prototype.update.call(this);
-
-	this.game.physics.arcade.overlap(this.player, this.collectable, function() {
-		if(self.collectable.collected !== true) {
-			self.dialog.converse("0", Info.convos.weird);
-		}
-	});
 }
 
 Level.prototype.create = function() {
 	self = this;
 
 	PlayState.prototype.create.call(this);
-
-	//make collectable
 	this.game.stage.backgroundColor = '#dddddd';
-	this.collectable = new Collectable(this.game,  (1920/2) - 200 , 1920/2);
-	this.entities.add(this.collectable);
 
-	this.speechbubble.say([
+	/*this.speechbubble.say([
 		'Hi there!',
 		'And welcome to this game',
 		'...',
@@ -50,10 +39,11 @@ Level.prototype.create = function() {
 		'Move by pressing the W, A, S, D keys',
 	], 2000, function() {
 		self.info.doneTutorialAnnoucing	=  new Date().getTime();	
-	});
+	});*/
 }
 
 Level.prototype.checkConditions = function() {
+
 	var self = this;
 	var timeSinceTutDone = new Date().getTime() - this.info.doneTutorialAnnoucing;
 
