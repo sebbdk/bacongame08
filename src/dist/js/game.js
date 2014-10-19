@@ -215,7 +215,7 @@ window.onload = function () {
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:16:02
+* @Last Modified time: 2014-10-19 17:13:09
 */
 
 'use strict';
@@ -244,7 +244,7 @@ NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
 	if(this.exists) {
 		var self = this;
-		this.game.debug.body(this);
+		//this.game.debug.body(this);
 
 		this.game.physics.arcade.overlap(this.player, this, function() {
 			if(self.isDangerous === true) {
@@ -283,7 +283,7 @@ module.exports = NPC;
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 22:11:57
+* @Last Modified time: 2014-10-19 17:07:48
 */
 
 'use strict';
@@ -301,7 +301,7 @@ var Knife = function(game, player) {
 Knife.prototype = Object.create(Phaser.Sprite.prototype);
 Knife.prototype.constructor = Knife;
 Knife.prototype.update = function() {
-	this.game.debug.body(this);
+	//this.game.debug.body(this);
 
 	if(this.player.body.velocity.x > 0) {
 		this.scale.x= -1;
@@ -323,7 +323,7 @@ module.exports = Knife;
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:09:55
+* @Last Modified time: 2014-10-19 17:13:04
 */
 
 'use strict';
@@ -355,7 +355,7 @@ NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
 	if(this.exists) {
 		var self = this;
-		this.game.debug.body(this);
+		//this.game.debug.body(this);
 
 		this.game.physics.arcade.overlap(this.player, this, function() {
 			if(self.isDangerous === true) {
@@ -534,7 +534,7 @@ var Player = function(game, x, y, frame) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function() {
-	this.game.debug.body(this);
+	//this.game.debug.body(this);
 };
 
 module.exports = Player;
@@ -736,6 +736,30 @@ Play.prototype = {
 		this.speechbubble = new Speechbubble(this.player);
 	
 		this.info.startTime = new Date().getTime();
+
+
+		this.entities.custSort = function (a, b) {
+	        if (a.y-(a.height*a.anchor.y) < b.y-(b.height*b.anchor.y)) {
+	            return -1;
+	        } else {
+	            return 1;
+	        }
+		};
+
+		this.entities.sort = function(index, order) {
+		    if (this.children.length < 2)
+		    {
+		        return;
+		    }
+
+		    if (typeof index === 'undefined') { index = 'z'; }
+		    if (typeof order === 'undefined') { order = Phaser.Group.SORT_ASCENDING; }
+
+		    this._sortProperty = index;
+
+		    this.children.sort(this.custSort.bind(this));
+		    this.updateZ();
+		}
 	},
 	lerp:function( amount, start, end ) {
 		if ( start == end )  {
@@ -802,7 +826,7 @@ Play.prototype = {
 		this.player.body.velocity.x = vel.x;
 		this.player.body.velocity.y = vel.y;
 
-		this.entities.sort('y');
+		this.entities.sort();
 
 		this.game.camera.x = this.lerp(0.3, this.game.camera.x, this.player.x - (this.game.width/2))
 		this.game.camera.y = this.lerp(0.3, this.game.camera.y, this.player.y - (this.game.height/2))
@@ -843,9 +867,20 @@ Preload.prototype = {
     this.load.image('background', 'assets/mosaic.png');
     this.load.image('knife', 'assets/knife.png');
 
+    this.load.image('treestump', 'assets/treestump.png');
+    
+    this.load.image('toft1', 'assets/toft1.png');
+    this.load.image('toft2', 'assets/toft1.png');
+    this.load.image('toft3', 'assets/toft3.png');
+
+    this.load.image('bush1', 'assets/bush1.png');
+    this.load.image('bush2', 'assets/bush2.png');
+    this.load.image('bush3', 'assets/bush3.png');
+
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
     this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
+    this.game.load.atlasXML('clutter', 'assets/clutter.png', 'assets/clutter.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;
@@ -867,7 +902,7 @@ module.exports = Preload;
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:10:33
+* @Last Modified time: 2014-10-19 17:19:15
 */
 
 var PlayState = require('./play');
@@ -911,6 +946,26 @@ Level.prototype.create = function() {
     this.titleText.anchor.setTo(0.5, 0.5);
     this.titleText.fixedToCamera = true;
     window.score = 0;
+
+
+    var clutter = [
+    /*	'toft1',
+    	'toft2',
+    	'toft3',*/
+
+    	'bush1',
+    	'bush2',
+    	'bush3',
+    ];
+
+
+    for(var c=0; c < 20; c++) {
+    	var x = 2048 * Math.random();
+    	var y = 2048 * Math.random();
+
+    	var s = this.add.sprite(x, y, clutter[Math.floor(Math.random() * clutter.length-1)] );
+    	this.entities.add(s);
+    }
 }
 
 Level.prototype.renderScore = function() {
@@ -923,60 +978,36 @@ Level.prototype.checkConditions = function() {
 	var self = this;
 
 
-	if(new Date().getTime() - lastAdd > 4000) {
+	if(new Date().getTime() - lastAdd > 3000) {
 
 		var types = [
 			NPC,
 			Derp
 		];
 
-		var amount = Math.round(Math.random() * 5) + 1;
+		var amount = Math.round(Math.random() * 7) + 1;
 		for(var x = 0; x <= amount; x++) {
+
+			var poxX = (self.player.x-300) + Math.random() * 600;
+			var poxY = (self.player.y-300) + Math.random() * 600;
+
+			if(poxX < 0 || poxX > 2024) {
+				continue;
+			}
+
+			if(poxY < 0 || poxY > 2024) {
+				continue;
+			}
+
 			var npc = new types[Math.floor(Math.random() * types.length)](
 				self.game, 
-				(self.player.x-300) + Math.random() * 600, 
-				(self.player.y-300) + Math.random() * 600, 
+				poxX, 
+				poxY, 
 				self.player
 			);
 			self.entities.add(npc);
 		}
 		lastAdd = new Date().getTime();
-	}
-
-	var self = this;
-	var timeSinceTutDone = new Date().getTime() - this.info.doneTutorialAnnoucing;
-
-	if(this.info.doneTutorialAnnoucing != null && 
-		timeSinceTutDone > 8000 && 
-		!this.info.remindToMove &&
-		!this.info.hasMoved) {
-
-		this.speechbubble.say([
-			'That was hint...',
-			'Move it bubblebuts!'
-		], 4000);
-		this.info.remindToMove = true;
-	}
-
-	if(this.info.doneTutorialAnnoucing && 
-		this.info.hasMoved && 
-		!this.info.mechanicTime && 
-		timeSinceTutDone > 8000) {
-		setTimeout(function() {
-			self.speechbubble.say([
-				'Mmm thats some good walking',
-				'Now abuse this new power of yours!!'
-			], 2000, function() {
-				setTimeout(function() {
-					self.speechbubble.say([
-						'Ah yir, look those puny legs at work!',
-						'Is this not the best walk animation ever?',
-						'Walk som more, enjoy it, let it soak in!'
-					]);
-				}, 3000);
-			});
-		}, 3000);
-		this.info.mechanicTime = true;
 	}
 
 	this.renderScore();

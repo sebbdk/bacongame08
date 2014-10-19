@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>derp.plist</filename>
+                <filename>derp.xml</filename>
             </struct>
         </map>
         <key>multiPack</key>

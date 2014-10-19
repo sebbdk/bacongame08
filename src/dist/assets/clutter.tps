@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.3</string>
         <key>fileName</key>
-        <string>/Users/sebb/Dropbox/games/baconjam08/src/assets/derp.tps</string>
+        <string>/Users/sebb/Dropbox/games/baconjam08/src/assets/clutter.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename>derp.png</filename>
+        <filename></filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>derp.xml</filename>
+                <filename></filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -164,7 +164,7 @@
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>
-            <enum type="SpriteSettings::TrimMode">None</enum>
+            <enum type="SpriteSettings::TrimMode">Trim</enum>
             <key>heuristicMask</key>
             <false/>
             <key>pivotPoint</key>
@@ -172,10 +172,13 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>derp2.png</filename>
-            <filename>derp3.png</filename>
-            <filename>derp4.png</filename>
-            <filename>derp1.png</filename>
+            <filename>treestump.png</filename>
+            <filename>toft3.png</filename>
+            <filename>bush3.png</filename>
+            <filename>bush2.png</filename>
+            <filename>bush1.png</filename>
+            <filename>toft2.png</filename>
+            <filename>toft1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

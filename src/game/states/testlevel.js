@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:10:33
+* @Last Modified time: 2014-10-19 17:19:15
 */
 
 var PlayState = require('./play');
@@ -46,6 +46,26 @@ Level.prototype.create = function() {
     this.titleText.anchor.setTo(0.5, 0.5);
     this.titleText.fixedToCamera = true;
     window.score = 0;
+
+
+    var clutter = [
+    /*	'toft1',
+    	'toft2',
+    	'toft3',*/
+
+    	'bush1',
+    	'bush2',
+    	'bush3',
+    ];
+
+
+    for(var c=0; c < 20; c++) {
+    	var x = 2048 * Math.random();
+    	var y = 2048 * Math.random();
+
+    	var s = this.add.sprite(x, y, clutter[Math.floor(Math.random() * clutter.length-1)] );
+    	this.entities.add(s);
+    }
 }
 
 Level.prototype.renderScore = function() {
@@ -58,60 +78,36 @@ Level.prototype.checkConditions = function() {
 	var self = this;
 
 
-	if(new Date().getTime() - lastAdd > 4000) {
+	if(new Date().getTime() - lastAdd > 3000) {
 
 		var types = [
 			NPC,
 			Derp
 		];
 
-		var amount = Math.round(Math.random() * 5) + 1;
+		var amount = Math.round(Math.random() * 7) + 1;
 		for(var x = 0; x <= amount; x++) {
+
+			var poxX = (self.player.x-300) + Math.random() * 600;
+			var poxY = (self.player.y-300) + Math.random() * 600;
+
+			if(poxX < 0 || poxX > 2024) {
+				continue;
+			}
+
+			if(poxY < 0 || poxY > 2024) {
+				continue;
+			}
+
 			var npc = new types[Math.floor(Math.random() * types.length)](
 				self.game, 
-				(self.player.x-300) + Math.random() * 600, 
-				(self.player.y-300) + Math.random() * 600, 
+				poxX, 
+				poxY, 
 				self.player
 			);
 			self.entities.add(npc);
 		}
 		lastAdd = new Date().getTime();
-	}
-
-	var self = this;
-	var timeSinceTutDone = new Date().getTime() - this.info.doneTutorialAnnoucing;
-
-	if(this.info.doneTutorialAnnoucing != null && 
-		timeSinceTutDone > 8000 && 
-		!this.info.remindToMove &&
-		!this.info.hasMoved) {
-
-		this.speechbubble.say([
-			'That was hint...',
-			'Move it bubblebuts!'
-		], 4000);
-		this.info.remindToMove = true;
-	}
-
-	if(this.info.doneTutorialAnnoucing && 
-		this.info.hasMoved && 
-		!this.info.mechanicTime && 
-		timeSinceTutDone > 8000) {
-		setTimeout(function() {
-			self.speechbubble.say([
-				'Mmm thats some good walking',
-				'Now abuse this new power of yours!!'
-			], 2000, function() {
-				setTimeout(function() {
-					self.speechbubble.say([
-						'Ah yir, look those puny legs at work!',
-						'Is this not the best walk animation ever?',
-						'Walk som more, enjoy it, let it soak in!'
-					]);
-				}, 3000);
-			});
-		}, 3000);
-		this.info.mechanicTime = true;
 	}
 
 	this.renderScore();

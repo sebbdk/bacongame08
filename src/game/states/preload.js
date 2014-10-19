@@ -19,9 +19,20 @@ Preload.prototype = {
     this.load.image('background', 'assets/mosaic.png');
     this.load.image('knife', 'assets/knife.png');
 
+    this.load.image('treestump', 'assets/treestump.png');
+    
+    this.load.image('toft1', 'assets/toft1.png');
+    this.load.image('toft2', 'assets/toft1.png');
+    this.load.image('toft3', 'assets/toft3.png');
+
+    this.load.image('bush1', 'assets/bush1.png');
+    this.load.image('bush2', 'assets/bush2.png');
+    this.load.image('bush3', 'assets/bush3.png');
+
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
     this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
+    this.game.load.atlasXML('clutter', 'assets/clutter.png', 'assets/clutter.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;

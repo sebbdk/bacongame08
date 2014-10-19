@@ -46,6 +46,30 @@ Play.prototype = {
 		this.speechbubble = new Speechbubble(this.player);
 	
 		this.info.startTime = new Date().getTime();
+
+
+		this.entities.custSort = function (a, b) {
+	        if (a.y-(a.height*a.anchor.y) < b.y-(b.height*b.anchor.y)) {
+	            return -1;
+	        } else {
+	            return 1;
+	        }
+		};
+
+		this.entities.sort = function(index, order) {
+		    if (this.children.length < 2)
+		    {
+		        return;
+		    }
+
+		    if (typeof index === 'undefined') { index = 'z'; }
+		    if (typeof order === 'undefined') { order = Phaser.Group.SORT_ASCENDING; }
+
+		    this._sortProperty = index;
+
+		    this.children.sort(this.custSort.bind(this));
+		    this.updateZ();
+		}
 	},
 	lerp:function( amount, start, end ) {
 		if ( start == end )  {
@@ -112,7 +136,7 @@ Play.prototype = {
 		this.player.body.velocity.x = vel.x;
 		this.player.body.velocity.y = vel.y;
 
-		this.entities.sort('y');
+		this.entities.sort();
 
 		this.game.camera.x = this.lerp(0.3, this.game.camera.x, this.player.x - (this.game.width/2))
 		this.game.camera.y = this.lerp(0.3, this.game.camera.y, this.player.y - (this.game.height/2))

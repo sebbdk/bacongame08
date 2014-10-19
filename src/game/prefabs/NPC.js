@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:09:55
+* @Last Modified time: 2014-10-19 17:13:04
 */
 
 'use strict';
@@ -34,7 +34,7 @@ NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
 	if(this.exists) {
 		var self = this;
-		this.game.debug.body(this);
+		//this.game.debug.body(this);
 
 		this.game.physics.arcade.overlap(this.player, this, function() {
 			if(self.isDangerous === true) {

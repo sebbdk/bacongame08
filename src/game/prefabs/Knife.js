@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 22:11:57
+* @Last Modified time: 2014-10-19 17:07:48
 */
 
 'use strict';
@@ -20,7 +20,7 @@ var Knife = function(game, player) {
 Knife.prototype = Object.create(Phaser.Sprite.prototype);
 Knife.prototype.constructor = Knife;
 Knife.prototype.update = function() {
-	this.game.debug.body(this);
+	//this.game.debug.body(this);
 
 	if(this.player.body.velocity.x > 0) {
 		this.scale.x= -1;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:8d9549d0fe6f5fe46edea9711e9bab24:d60deb9adc7aed3ed77523962ede7460:54fc99086d98260a155bb0a3618071bf$ -->
+<TextureAtlas imagePath="clutter.png">
+    <SubTexture name="bush1" x="2" y="2" width="112" height="92"/>
+    <SubTexture name="bush2" x="116" y="2" width="96" height="100"/>
+    <SubTexture name="bush3" x="214" y="2" width="72" height="104"/>
+    <SubTexture name="toft1" x="288" y="2" width="32" height="20"/>
+    <SubTexture name="toft2" x="322" y="2" width="32" height="16"/>
+    <SubTexture name="toft3" x="356" y="2" width="52" height="20"/>
+    <SubTexture name="treestump" x="410" y="2" width="88" height="36"/>
+</TextureAtlas>

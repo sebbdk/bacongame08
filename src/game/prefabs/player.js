@@ -17,7 +17,7 @@ var Player = function(game, x, y, frame) {
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
 Player.prototype.update = function() {
-	this.game.debug.body(this);
+	//this.game.debug.body(this);
 };
 
 module.exports = Player;
