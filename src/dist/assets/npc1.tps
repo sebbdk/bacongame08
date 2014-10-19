@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename></filename>
+        <filename>npc1.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename></filename>
+                <filename>npc1.xml</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -174,6 +174,7 @@
         <array>
             <filename>n1.png</filename>
             <filename>n2.png</filename>
+            <filename>n3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

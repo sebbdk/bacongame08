@@ -2,31 +2,28 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 05:09:55
+* @Last Modified time: 2014-10-19 05:16:02
 */
 
 'use strict';
 
 var NPC = function(game, x, y, player) {
-	Phaser.Sprite.call(this, game, x, y, 'npc1', 2);
+	Phaser.Sprite.call(this, game, x, y, 'derp', 2);
 
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.player = player;
-	this.lastStomp = 0;
+	this.lastCharge = new Date().getTime();
 	this.isDangerous = false;
+	this.direction = (Math.round(Math.random()) === 1 ? 1:-1);
 
-	this.body.setSize(42, 35, 0, 35);
+	this.body.setSize(42, 70, 0, 15);
 	this.anchor.setTo(0.5, 0.5);
 
-	this.animations.add('fall', [2], 4, true);
-	this.animations.add('stomp', [1], 4, true);
+	this.animations.add('run', [1,2,3], 8, true);
 	this.animations.add('stand', [0], 4, true);
 
 	this.animations.play('stand');
-
-	this.scale.x = 1.5;
-	this.scale.y = 1.5;
 }; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
@@ -45,26 +42,22 @@ NPC.prototype.update = function() {
 		});
 
 
-		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000) {
-			var posY = this.y;
+		if(new Date().getTime() - this.lastCharge > 2000 + Math.random() * 1000) {
+			this.direction = this.direction * -1;
 
+			this.scale.x = this.direction*-1;
+			self.isDangerous = true;
+
+			var chargeTo = this.x + (200 * this.direction);
 			var t = this.game.add.tween(this);
-			self.animations.play('fall');
-			t.to({ y: posY-50 }, 300, Phaser.Easing.Bounce.InOut, true, 0, 1, true);
+			self.animations.play('run');
+			t.to({ x: chargeTo }, 500, Phaser.Easing.Bounce.InOut, true);
 			t.onComplete.add(function(arg, arg2) {
-				this.animations.play('stomp');
-				setTimeout(function() {
-					self.animations.play('stand');
-					self.isDangerous = false;
-				}, 100)
-			}, this);
+				self.animations.play('stand');
+				self.isDangerous = false;
+			});
 
-			t.onLoop.add(function(arg, arg2) {
-				self.animations.play('fall');
-				this.isDangerous = true;
-			}, this);
-
-			this.lastStomp = new Date().getTime();
+			this.lastCharge = new Date().getTime();
 		}
 	}
 

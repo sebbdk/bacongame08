@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:dae5bcf932833413a90c73bbfcc9b1b9:cd41c2b5c2d8eedb196fa0b992486128:4414894fe7cd7db9db0e8000cc6e392e$ -->
+<!-- $TexturePacker:SmartUpdate:f89aee0bab5ad8eeffc358a5d246a9d9:284167b0558736efdbc63600d27426f2:4414894fe7cd7db9db0e8000cc6e392e$ -->
 <TextureAtlas imagePath="npc1.png">
     <SubTexture name="n1" x="2" y="2" width="128" height="128"/>
     <SubTexture name="n2" x="132" y="2" width="128" height="128"/>
+    <SubTexture name="n3" x="262" y="2" width="128" height="128"/>
 </TextureAtlas>

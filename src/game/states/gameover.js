@@ -11,7 +11,7 @@ GameOver.prototype = {
     this.titleText = this.game.add.text($(window).width()/2, 100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You got squashed!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You scored: ' + window.score, { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
 
     this.instructionText = this.game.add.text($(window).width()/2, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});

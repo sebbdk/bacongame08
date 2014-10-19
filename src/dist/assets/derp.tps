@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.3.3</string>
         <key>fileName</key>
-        <string>/Users/sebb/Dropbox/games/baconjam08/src/assets/npc1.tps</string>
+        <string>/Users/sebb/Dropbox/games/baconjam08/src/assets/derp.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -38,7 +38,7 @@
         <key>dataFormat</key>
         <string>sparrow</string>
         <key>textureFileName</key>
-        <filename>npc1.png</filename>
+        <filename>derp.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>npc1.xml</filename>
+                <filename>derp.plist</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -172,9 +172,10 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>n1.png</filename>
-            <filename>n2.png</filename>
-            <filename>n3.png</filename>
+            <filename>derp2.png</filename>
+            <filename>derp3.png</filename>
+            <filename>derp4.png</filename>
+            <filename>derp1.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

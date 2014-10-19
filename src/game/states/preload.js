@@ -21,6 +21,7 @@ Preload.prototype = {
 
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
+    this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;

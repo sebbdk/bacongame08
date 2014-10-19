@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:b885405a22fc7748b2e2382d6e99f87b:551cbfc3ac659739698c02aabfcf938d:b49807957588c850d0ea95e49f804cca$ -->
+<TextureAtlas imagePath="derp.png">
+    <SubTexture name="derp1" x="2" y="2" width="128" height="128"/>
+    <SubTexture name="derp2" x="132" y="2" width="128" height="128"/>
+    <SubTexture name="derp3" x="262" y="2" width="128" height="128"/>
+    <SubTexture name="derp4" x="392" y="2" width="128" height="128"/>
+</TextureAtlas>

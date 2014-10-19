@@ -2,12 +2,13 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 22:44:42
+* @Last Modified time: 2014-10-19 05:10:33
 */
 
 var PlayState = require('./play');
 var Info = require('../Info');
 var NPC = require('../prefabs/NPC');
+var Derp = require('../prefabs/Derp');
 var Knife = require('../prefabs/Knife');
 
 function Level() {}
@@ -35,13 +36,20 @@ Level.prototype.create = function() {
 	this.knife = new Knife(this.game,  this.player);
 	this.entities.add(this.knife);
 
-	var npc = new NPC(this.game,  (1920/2) - 50, 1920/2, this.player);
-	this.entities.add(npc);
-
-
 	this.speechbubble.say([
 		'Stabby time!'
 	], 2000);
+
+
+    var style = { font: '45px Arial', fill: '#333333', align: 'center'};
+    this.titleText = this.game.add.text($(window).width()/2, 50, '', style);
+    this.titleText.anchor.setTo(0.5, 0.5);
+    this.titleText.fixedToCamera = true;
+    window.score = 0;
+}
+
+Level.prototype.renderScore = function() {
+	this.titleText.text = "Score: " + window.score;
 }
 
 var lastAdd = 0;
@@ -51,11 +59,15 @@ Level.prototype.checkConditions = function() {
 
 
 	if(new Date().getTime() - lastAdd > 4000) {
+
+		var types = [
+			NPC,
+			Derp
+		];
+
 		var amount = Math.round(Math.random() * 5) + 1;
-		console.log(amount);
 		for(var x = 0; x <= amount; x++) {
-			console.log('spawn!!');
-			var npc = new NPC(
+			var npc = new types[Math.floor(Math.random() * types.length)](
 				self.game, 
 				(self.player.x-300) + Math.random() * 600, 
 				(self.player.y-300) + Math.random() * 600, 
@@ -101,6 +113,8 @@ Level.prototype.checkConditions = function() {
 		}, 3000);
 		this.info.mechanicTime = true;
 	}
+
+	this.renderScore();
 }
 
 module.exports = Level;

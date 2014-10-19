@@ -210,7 +210,75 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":11,"./states/gameover":12,"./states/menu":13,"./states/play":14,"./states/preload":15,"./states/testlevel":16}],4:[function(require,module,exports){
+},{"./states/boot":12,"./states/gameover":13,"./states/menu":14,"./states/play":15,"./states/preload":16,"./states/testlevel":17}],4:[function(require,module,exports){
+/* 
+* @Author: sebb
+* @Date:   2014-10-18 20:55:28
+* @Last Modified by:   sebb
+* @Last Modified time: 2014-10-19 05:16:02
+*/
+
+'use strict';
+
+var NPC = function(game, x, y, player) {
+	Phaser.Sprite.call(this, game, x, y, 'derp', 2);
+
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+
+	this.player = player;
+	this.lastCharge = new Date().getTime();
+	this.isDangerous = false;
+	this.direction = (Math.round(Math.random()) === 1 ? 1:-1);
+
+	this.body.setSize(42, 70, 0, 15);
+	this.anchor.setTo(0.5, 0.5);
+
+	this.animations.add('run', [1,2,3], 8, true);
+	this.animations.add('stand', [0], 4, true);
+
+	this.animations.play('stand');
+}; 
+
+NPC.prototype = Object.create(Phaser.Sprite.prototype);
+NPC.prototype.constructor = NPC;
+NPC.prototype.update = function() {
+	if(this.exists) {
+		var self = this;
+		this.game.debug.body(this);
+
+		this.game.physics.arcade.overlap(this.player, this, function() {
+			if(self.isDangerous === true) {
+				self.game.state.start('gameover');
+			}
+			window.score++;
+			self.kill();
+		});
+
+
+		if(new Date().getTime() - this.lastCharge > 2000 + Math.random() * 1000) {
+			this.direction = this.direction * -1;
+
+			this.scale.x = this.direction*-1;
+			self.isDangerous = true;
+
+			var chargeTo = this.x + (200 * this.direction);
+			var t = this.game.add.tween(this);
+			self.animations.play('run');
+			t.to({ x: chargeTo }, 500, Phaser.Easing.Bounce.InOut, true);
+			t.onComplete.add(function(arg, arg2) {
+				self.animations.play('stand');
+				self.isDangerous = false;
+			});
+
+			this.lastCharge = new Date().getTime();
+		}
+	}
+
+};
+
+module.exports = NPC;
+
+},{}],5:[function(require,module,exports){
 /* 
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
@@ -250,12 +318,12 @@ Knife.prototype.update = function() {
 
 module.exports = Knife;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 /* 
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 04:07:56
+* @Last Modified time: 2014-10-19 05:09:55
 */
 
 'use strict';
@@ -272,6 +340,7 @@ var NPC = function(game, x, y, player) {
 	this.body.setSize(42, 35, 0, 35);
 	this.anchor.setTo(0.5, 0.5);
 
+	this.animations.add('fall', [2], 4, true);
 	this.animations.add('stomp', [1], 4, true);
 	this.animations.add('stand', [0], 4, true);
 
@@ -292,7 +361,7 @@ NPC.prototype.update = function() {
 			if(self.isDangerous === true) {
 				self.game.state.start('gameover');
 			}
-
+			window.score++;
 			self.kill();
 		});
 
@@ -301,6 +370,7 @@ NPC.prototype.update = function() {
 			var posY = this.y;
 
 			var t = this.game.add.tween(this);
+			self.animations.play('fall');
 			t.to({ y: posY-50 }, 300, Phaser.Easing.Bounce.InOut, true, 0, 1, true);
 			t.onComplete.add(function(arg, arg2) {
 				this.animations.play('stomp');
@@ -311,6 +381,7 @@ NPC.prototype.update = function() {
 			}, this);
 
 			t.onLoop.add(function(arg, arg2) {
+				self.animations.play('fall');
 				this.isDangerous = true;
 			}, this);
 
@@ -322,7 +393,7 @@ NPC.prototype.update = function() {
 
 module.exports = NPC;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 /* 
 * @Author: sebb
 * @Date:   2014-09-08 16:58:31
@@ -372,7 +443,7 @@ Dialog.prototype.converse = function(id, conversation, force) {
 }
 
 module.exports = Dialog;
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var InventorySlot = require('../prefabs/inventorySlot');
@@ -419,7 +490,7 @@ Inventory.prototype.addItem = function(item) {
 
 module.exports = Inventory;
 
-},{"../prefabs/inventorySlot":8}],8:[function(require,module,exports){
+},{"../prefabs/inventorySlot":9}],9:[function(require,module,exports){
 'use strict';
 
 var InventorySlot = function(game, x, y, frame) {
@@ -443,7 +514,7 @@ InventorySlot.prototype.clear = function(item) {};
 
 module.exports = InventorySlot;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Player = function(game, x, y, frame) {
@@ -468,7 +539,7 @@ Player.prototype.update = function() {
 
 module.exports = Player;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /* 
 * @Author: sebb
 * @Date:   2014-09-14 01:33:33
@@ -518,7 +589,7 @@ function SpeechBubble(target) {
 
 
 module.exports = SpeechBubble;
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 function Boot() {
@@ -556,7 +627,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -570,7 +641,7 @@ GameOver.prototype = {
     this.titleText = this.game.add.text($(window).width()/2, 100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You got squashed!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You scored: ' + window.score, { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
 
     this.instructionText = this.game.add.text($(window).width()/2, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
@@ -584,7 +655,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -616,7 +687,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var Player = require('../prefabs/player');
@@ -750,7 +821,7 @@ Play.prototype = {
 };
 
 module.exports = Play;
-},{"../Info":1,"../Vector":2,"../prefabs/dialog":6,"../prefabs/inventory":7,"../prefabs/player":9,"../prefabs/speechbubble":10}],15:[function(require,module,exports){
+},{"../Info":1,"../Vector":2,"../prefabs/dialog":7,"../prefabs/inventory":8,"../prefabs/player":10,"../prefabs/speechbubble":11}],16:[function(require,module,exports){
 
 'use strict';
 
@@ -774,6 +845,7 @@ Preload.prototype = {
 
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
+    this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;
@@ -790,17 +862,18 @@ Preload.prototype = {
 
 module.exports = Preload;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 /* 
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 22:44:42
+* @Last Modified time: 2014-10-19 05:10:33
 */
 
 var PlayState = require('./play');
 var Info = require('../Info');
 var NPC = require('../prefabs/NPC');
+var Derp = require('../prefabs/Derp');
 var Knife = require('../prefabs/Knife');
 
 function Level() {}
@@ -828,13 +901,20 @@ Level.prototype.create = function() {
 	this.knife = new Knife(this.game,  this.player);
 	this.entities.add(this.knife);
 
-	var npc = new NPC(this.game,  (1920/2) - 50, 1920/2, this.player);
-	this.entities.add(npc);
-
-
 	this.speechbubble.say([
 		'Stabby time!'
 	], 2000);
+
+
+    var style = { font: '45px Arial', fill: '#333333', align: 'center'};
+    this.titleText = this.game.add.text($(window).width()/2, 50, '', style);
+    this.titleText.anchor.setTo(0.5, 0.5);
+    this.titleText.fixedToCamera = true;
+    window.score = 0;
+}
+
+Level.prototype.renderScore = function() {
+	this.titleText.text = "Score: " + window.score;
 }
 
 var lastAdd = 0;
@@ -844,11 +924,15 @@ Level.prototype.checkConditions = function() {
 
 
 	if(new Date().getTime() - lastAdd > 4000) {
+
+		var types = [
+			NPC,
+			Derp
+		];
+
 		var amount = Math.round(Math.random() * 5) + 1;
-		console.log(amount);
 		for(var x = 0; x <= amount; x++) {
-			console.log('spawn!!');
-			var npc = new NPC(
+			var npc = new types[Math.floor(Math.random() * types.length)](
 				self.game, 
 				(self.player.x-300) + Math.random() * 600, 
 				(self.player.y-300) + Math.random() * 600, 
@@ -894,7 +978,9 @@ Level.prototype.checkConditions = function() {
 		}, 3000);
 		this.info.mechanicTime = true;
 	}
+
+	this.renderScore();
 }
 
 module.exports = Level;
-},{"../Info":1,"../prefabs/Knife":4,"../prefabs/NPC":5,"./play":14}]},{},[3])
+},{"../Info":1,"../prefabs/Derp":4,"../prefabs/Knife":5,"../prefabs/NPC":6,"./play":15}]},{},[3])
