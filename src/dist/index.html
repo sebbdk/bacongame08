@@ -45,5 +45,28 @@
 	<script src="js/phaser.js"></script>
 	<script src="js/game.js"></script>
 
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=583662311761835&version=v2.0";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+	<div class="like-btn">
+		<div class="fb-like" data-href="http://sebbdk.github.io/bacongame08/src/dist" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+	</div>
+
+	<div class="scores">
+		<div class="score-list">
+			
+		</div>
+
+		
+		<input type="text" class="submit-score" placeholder="Enter your name.." />
+		<a type="text" class="submit-score-btn" >Submit score</a>
+	</div>
+
 </body>
 </html>

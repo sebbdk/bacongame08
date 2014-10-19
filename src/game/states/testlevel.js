@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 21:41:01
+* @Last Modified time: 2014-10-19 23:05:38
 */
 
 var PlayState = require('./play');
@@ -28,6 +28,9 @@ Level.prototype.update = function() {
 }
 
 Level.prototype.create = function() {
+	$('.scores').hide();
+
+
 	self = this;
 
 	PlayState.prototype.create.call(this);
