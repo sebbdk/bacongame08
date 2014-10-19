@@ -215,7 +215,7 @@ window.onload = function () {
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 18:47:18
+* @Last Modified time: 2014-10-19 18:54:47
 */
 
 'use strict';
@@ -245,7 +245,7 @@ var NPC = function(game, x, y, player) {
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
 NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
-	if(this.exists) {
+	if(this.exists && this.logic !== false) {
 		var self = this;
 		//this.game.debug.body(this);
 
@@ -332,7 +332,7 @@ module.exports = Knife;
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 18:49:24
+* @Last Modified time: 2014-10-19 18:54:13
 */
 
 'use strict';
@@ -348,6 +348,7 @@ var NPC = function(game, x, y, player) {
 
 	this.body.setSize(42, 35, 0, 35);
 	this.anchor.setTo(0.5, 0.5);
+	this.logic = true;
 
 	this.animations.add('fall', [2], 4, true);
 	this.animations.add('stomp', [1], 4, true);
@@ -371,6 +372,8 @@ NPC.prototype.update = function() {
 		//this.game.debug.body(this);
 
 		this.game.physics.arcade.overlap(this.player, this, function() {
+			self.logic = false;
+
 			if(self.isDangerous === true) {
 				self.game.state.start('gameover');
 			}
@@ -381,7 +384,6 @@ NPC.prototype.update = function() {
 			setTimeout(function() {
 				self.kill();
 			}, 900)
-			self.logic = false;
 		});
 
 

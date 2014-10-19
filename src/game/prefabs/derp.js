@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 18:47:18
+* @Last Modified time: 2014-10-19 18:54:47
 */
 
 'use strict';
@@ -32,7 +32,7 @@ var NPC = function(game, x, y, player) {
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
 NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
-	if(this.exists) {
+	if(this.exists && this.logic !== false) {
 		var self = this;
 		//this.game.debug.body(this);
 
