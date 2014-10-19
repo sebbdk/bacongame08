@@ -902,7 +902,7 @@ module.exports = Preload;
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:19:15
+* @Last Modified time: 2014-10-19 17:23:59
 */
 
 var PlayState = require('./play');
@@ -985,11 +985,11 @@ Level.prototype.checkConditions = function() {
 			Derp
 		];
 
-		var amount = Math.round(Math.random() * 7) + 1;
+		var amount = Math.round(Math.random() * 15) + 1;
 		for(var x = 0; x <= amount; x++) {
 
-			var poxX = (self.player.x-300) + Math.random() * 600;
-			var poxY = (self.player.y-300) + Math.random() * 600;
+			var poxX = (self.player.x-600) + Math.random() * 1200;
+			var poxY = (self.player.y-600) + Math.random() * 1200;
 
 			if(poxX < 0 || poxX > 2024) {
 				continue;
