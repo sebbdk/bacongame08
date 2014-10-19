@@ -176,6 +176,10 @@
             <filename>derp3.png</filename>
             <filename>derp4.png</filename>
             <filename>derp1.png</filename>
+            <filename>portal1.png</filename>
+            <filename>portal2.png</filename>
+            <filename>portal3.png</filename>
+            <filename>portal4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

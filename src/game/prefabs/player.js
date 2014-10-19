@@ -6,6 +6,7 @@ var Player = function(game, x, y, frame) {
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.body.setSize(42, 48, 0, 20);
+	this.body.collideWorldBounds = true;
 
 	this.anchor.setTo(0.5, 0.5);
 

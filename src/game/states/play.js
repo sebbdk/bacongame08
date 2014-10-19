@@ -84,7 +84,7 @@ Play.prototype = {
 	update: function() {
 		this.checkConditions();
 
-		var speed = 600;
+		var speed = 800;
 		var vel = {x:0, y:0};
 
 		if(!this.dialog.active) {

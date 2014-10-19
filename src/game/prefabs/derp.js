@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:13:09
+* @Last Modified time: 2014-10-19 18:47:18
 */
 
 'use strict';
@@ -22,8 +22,11 @@ var NPC = function(game, x, y, player) {
 
 	this.animations.add('run', [1,2,3], 8, true);
 	this.animations.add('stand', [0], 4, true);
+	this.animations.add('portal', [8,9,10,11], 4, true);
+	this.poof = this.animations.add('poof', [4,5,6,7], 8, true);
 
-	this.animations.play('stand');
+	this.animations.play('portal', true).play('stand');
+	this.killSound = game.add.audio('monsterkill');
 }; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
@@ -38,7 +41,13 @@ NPC.prototype.update = function() {
 				self.game.state.start('gameover');
 			}
 			window.score++;
-			self.kill();
+			self.killSound.play();
+
+			self.animations.play('poof', true)
+			setTimeout(function() {
+				self.kill();
+			}, 450)
+			self.logic = false;
 		});
 
 

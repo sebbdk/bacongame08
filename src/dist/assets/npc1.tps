@@ -175,6 +175,14 @@
             <filename>n1.png</filename>
             <filename>n2.png</filename>
             <filename>n3.png</filename>
+            <filename>portal1.png</filename>
+            <filename>portal2.png</filename>
+            <filename>portal3.png</filename>
+            <filename>portal4.png</filename>
+            <filename>poof1.png</filename>
+            <filename>poof2.png</filename>
+            <filename>poof3.png</filename>
+            <filename>poof4.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:f89aee0bab5ad8eeffc358a5d246a9d9:284167b0558736efdbc63600d27426f2:4414894fe7cd7db9db0e8000cc6e392e$ -->
+<!-- $TexturePacker:SmartUpdate:12021e97ff4a44a8cb7dc05fc9ffc249:3748e053f0babc77dfe2a140b516e58e:4414894fe7cd7db9db0e8000cc6e392e$ -->
 <TextureAtlas imagePath="npc1.png">
     <SubTexture name="n1" x="2" y="2" width="128" height="128"/>
     <SubTexture name="n2" x="132" y="2" width="128" height="128"/>
     <SubTexture name="n3" x="262" y="2" width="128" height="128"/>
+    <SubTexture name="poof1" x="392" y="2" width="128" height="128"/>
+    <SubTexture name="poof2" x="522" y="2" width="128" height="128"/>
+    <SubTexture name="poof3" x="652" y="2" width="128" height="128"/>
+    <SubTexture name="poof4" x="782" y="2" width="128" height="128"/>
+    <SubTexture name="portal1" x="912" y="2" width="128" height="128"/>
+    <SubTexture name="portal2" x="1042" y="2" width="128" height="128"/>
+    <SubTexture name="portal3" x="1172" y="2" width="128" height="128"/>
+    <SubTexture name="portal4" x="1302" y="2" width="128" height="128"/>
 </TextureAtlas>

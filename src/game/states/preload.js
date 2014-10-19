@@ -20,7 +20,7 @@ Preload.prototype = {
     this.load.image('knife', 'assets/knife.png');
 
     this.load.image('treestump', 'assets/treestump.png');
-    
+
     this.load.image('toft1', 'assets/toft1.png');
     this.load.image('toft2', 'assets/toft1.png');
     this.load.image('toft3', 'assets/toft3.png');
@@ -33,6 +33,9 @@ Preload.prototype = {
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
     this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
     this.game.load.atlasXML('clutter', 'assets/clutter.png', 'assets/clutter.xml');
+
+
+    this.game.load.audio('monsterkill', 'assets/sfx/Hit_Hurt2.mp3')
   },
   create: function() {
     this.asset.cropEnabled = false;

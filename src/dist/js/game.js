@@ -215,7 +215,7 @@ window.onload = function () {
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:13:09
+* @Last Modified time: 2014-10-19 18:47:18
 */
 
 'use strict';
@@ -235,8 +235,11 @@ var NPC = function(game, x, y, player) {
 
 	this.animations.add('run', [1,2,3], 8, true);
 	this.animations.add('stand', [0], 4, true);
+	this.animations.add('portal', [8,9,10,11], 4, true);
+	this.poof = this.animations.add('poof', [4,5,6,7], 8, true);
 
-	this.animations.play('stand');
+	this.animations.play('portal', true).play('stand');
+	this.killSound = game.add.audio('monsterkill');
 }; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
@@ -251,7 +254,13 @@ NPC.prototype.update = function() {
 				self.game.state.start('gameover');
 			}
 			window.score++;
-			self.kill();
+			self.killSound.play();
+
+			self.animations.play('poof', true)
+			setTimeout(function() {
+				self.kill();
+			}, 450)
+			self.logic = false;
 		});
 
 
@@ -323,7 +332,7 @@ module.exports = Knife;
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:13:04
+* @Last Modified time: 2014-10-19 18:49:24
 */
 
 'use strict';
@@ -334,7 +343,7 @@ var NPC = function(game, x, y, player) {
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.player = player;
-	this.lastStomp = 0;
+	this.lastStomp = new Date().getTime() + 400;
 	this.isDangerous = false;
 
 	this.body.setSize(42, 35, 0, 35);
@@ -343,17 +352,21 @@ var NPC = function(game, x, y, player) {
 	this.animations.add('fall', [2], 4, true);
 	this.animations.add('stomp', [1], 4, true);
 	this.animations.add('stand', [0], 4, true);
+	this.animations.add('portal', [7,8,9,10], 4, true);
+	this.poof = this.animations.add('poof', [3,4,5,6], 8, true);
 
-	this.animations.play('stand');
+	this.animations.play('portal', true).play('stand');
 
 	this.scale.x = 1.5;
 	this.scale.y = 1.5;
+
+	this.killSound = game.add.audio('monsterkill');
 }; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
 NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
-	if(this.exists) {
+	if(this.exists && this.logic !== false) {
 		var self = this;
 		//this.game.debug.body(this);
 
@@ -361,12 +374,18 @@ NPC.prototype.update = function() {
 			if(self.isDangerous === true) {
 				self.game.state.start('gameover');
 			}
+			self.killSound.play();
 			window.score++;
-			self.kill();
+
+			self.animations.play('poof', true)
+			setTimeout(function() {
+				self.kill();
+			}, 900)
+			self.logic = false;
 		});
 
 
-		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000) {
+		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000 && self.logic !== false) {
 			var posY = this.y;
 
 			var t = this.game.add.tween(this);
@@ -523,6 +542,7 @@ var Player = function(game, x, y, frame) {
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.body.setSize(42, 48, 0, 20);
+	this.body.collideWorldBounds = true;
 
 	this.anchor.setTo(0.5, 0.5);
 
@@ -774,7 +794,7 @@ Play.prototype = {
 	update: function() {
 		this.checkConditions();
 
-		var speed = 600;
+		var speed = 800;
 		var vel = {x:0, y:0};
 
 		if(!this.dialog.active) {
@@ -868,7 +888,7 @@ Preload.prototype = {
     this.load.image('knife', 'assets/knife.png');
 
     this.load.image('treestump', 'assets/treestump.png');
-    
+
     this.load.image('toft1', 'assets/toft1.png');
     this.load.image('toft2', 'assets/toft1.png');
     this.load.image('toft3', 'assets/toft3.png');
@@ -881,6 +901,9 @@ Preload.prototype = {
     this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
     this.game.load.atlasXML('derp', 'assets/derp.png', 'assets/derp.xml');
     this.game.load.atlasXML('clutter', 'assets/clutter.png', 'assets/clutter.xml');
+
+
+    this.game.load.audio('monsterkill', 'assets/sfx/Hit_Hurt2.mp3')
   },
   create: function() {
     this.asset.cropEnabled = false;

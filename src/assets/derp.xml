@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:472bf424624166b09e82dca9e5be2e17:551cbfc3ac659739698c02aabfcf938d:5c0a601e2cfb67b02683dff20687b82e$ -->
+<!-- $TexturePacker:SmartUpdate:3c719a42465859ed5c3a91a80d4a3a41:cf89969f41917a0acb7f561c1b412cc6:5c0a601e2cfb67b02683dff20687b82e$ -->
 <TextureAtlas imagePath="derp.png">
     <SubTexture name="derp1" x="2" y="2" width="128" height="128"/>
     <SubTexture name="derp2" x="132" y="2" width="128" height="128"/>
     <SubTexture name="derp3" x="262" y="2" width="128" height="128"/>
     <SubTexture name="derp4" x="392" y="2" width="128" height="128"/>
+    <SubTexture name="poof1" x="522" y="2" width="128" height="128"/>
+    <SubTexture name="poof2" x="652" y="2" width="128" height="128"/>
+    <SubTexture name="poof3" x="782" y="2" width="128" height="128"/>
+    <SubTexture name="poof4" x="912" y="2" width="128" height="128"/>
+    <SubTexture name="portal1" x="1042" y="2" width="128" height="128"/>
+    <SubTexture name="portal2" x="1172" y="2" width="128" height="128"/>
+    <SubTexture name="portal3" x="1302" y="2" width="128" height="128"/>
+    <SubTexture name="portal4" x="1432" y="2" width="128" height="128"/>
 </TextureAtlas>

@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:13:04
+* @Last Modified time: 2014-10-19 18:49:24
 */
 
 'use strict';
@@ -13,7 +13,7 @@ var NPC = function(game, x, y, player) {
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.player = player;
-	this.lastStomp = 0;
+	this.lastStomp = new Date().getTime() + 400;
 	this.isDangerous = false;
 
 	this.body.setSize(42, 35, 0, 35);
@@ -22,17 +22,21 @@ var NPC = function(game, x, y, player) {
 	this.animations.add('fall', [2], 4, true);
 	this.animations.add('stomp', [1], 4, true);
 	this.animations.add('stand', [0], 4, true);
+	this.animations.add('portal', [7,8,9,10], 4, true);
+	this.poof = this.animations.add('poof', [3,4,5,6], 8, true);
 
-	this.animations.play('stand');
+	this.animations.play('portal', true).play('stand');
 
 	this.scale.x = 1.5;
 	this.scale.y = 1.5;
+
+	this.killSound = game.add.audio('monsterkill');
 }; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
 NPC.prototype.constructor = NPC;
 NPC.prototype.update = function() {
-	if(this.exists) {
+	if(this.exists && this.logic !== false) {
 		var self = this;
 		//this.game.debug.body(this);
 
@@ -40,12 +44,18 @@ NPC.prototype.update = function() {
 			if(self.isDangerous === true) {
 				self.game.state.start('gameover');
 			}
+			self.killSound.play();
 			window.score++;
-			self.kill();
+
+			self.animations.play('poof', true)
+			setTimeout(function() {
+				self.kill();
+			}, 900)
+			self.logic = false;
 		});
 
 
-		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000) {
+		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000 && self.logic !== false) {
 			var posY = this.y;
 
 			var t = this.game.add.tween(this);
