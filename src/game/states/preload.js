@@ -20,6 +20,7 @@ Preload.prototype = {
     this.load.image('knife', 'assets/knife.png');
 
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
+    this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;

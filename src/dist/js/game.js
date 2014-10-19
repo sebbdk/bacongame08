@@ -255,28 +255,31 @@ module.exports = Knife;
 * @Author: sebb
 * @Date:   2014-10-18 20:55:28
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-18 22:48:54
+* @Last Modified time: 2014-10-19 04:07:56
 */
 
 'use strict';
 
 var NPC = function(game, x, y, player) {
-	Phaser.Sprite.call(this, game, x, y, 'player', 2);
+	Phaser.Sprite.call(this, game, x, y, 'npc1', 2);
 
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.player = player;
+	this.lastStomp = 0;
+	this.isDangerous = false;
+
 	this.body.setSize(42, 35, 0, 35);
 	this.anchor.setTo(0.5, 0.5);
 
-	this.animations.add('walk', [0, 1], 4, true);
-	this.animations.add('stand', [2], 4, true);
+	this.animations.add('stomp', [1], 4, true);
+	this.animations.add('stand', [0], 4, true);
+
 	this.animations.play('stand');
 
-
-	this.scale.x = 2;
-	this.scale.y = 2;
-};
+	this.scale.x = 1.5;
+	this.scale.y = 1.5;
+}; 
 
 NPC.prototype = Object.create(Phaser.Sprite.prototype);
 NPC.prototype.constructor = NPC;
@@ -286,11 +289,35 @@ NPC.prototype.update = function() {
 		this.game.debug.body(this);
 
 		this.game.physics.arcade.overlap(this.player, this, function() {
-			console.log('i am done getting stabbed... oh noe!!');
+			if(self.isDangerous === true) {
+				self.game.state.start('gameover');
+			}
+
 			self.kill();
 		});
 
+
+		if(new Date().getTime() - this.lastStomp > 2000 + Math.random() * 1000) {
+			var posY = this.y;
+
+			var t = this.game.add.tween(this);
+			t.to({ y: posY-50 }, 300, Phaser.Easing.Bounce.InOut, true, 0, 1, true);
+			t.onComplete.add(function(arg, arg2) {
+				this.animations.play('stomp');
+				setTimeout(function() {
+					self.animations.play('stand');
+					self.isDangerous = false;
+				}, 100)
+			}, this);
+
+			t.onLoop.add(function(arg, arg2) {
+				this.isDangerous = true;
+			}, this);
+
+			this.lastStomp = new Date().getTime();
+		}
 	}
+
 };
 
 module.exports = NPC;
@@ -540,18 +567,18 @@ GameOver.prototype = {
   },
   create: function () {
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
+    this.titleText = this.game.add.text($(window).width()/2, 100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You Win!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You got squashed!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.text(this.game.world.centerX, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionText = this.game.add.text($(window).width()/2, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
     if(this.game.input.activePointer.justPressed()) {
-      this.game.state.start('play');
+      this.game.state.start('testlevel');
     }
   }
 };
@@ -746,6 +773,7 @@ Preload.prototype = {
     this.load.image('knife', 'assets/knife.png');
 
     this.game.load.atlasXML('player', 'assets/player.png', 'assets/player.xml');
+    this.game.load.atlasXML('npc1', 'assets/npc1.png', 'assets/npc1.xml');
   },
   create: function() {
     this.asset.cropEnabled = false;
