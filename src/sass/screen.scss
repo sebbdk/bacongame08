@@ -168,6 +168,11 @@ a {
 	box-shadow: 0 0px 24px rgba(0,0,0,0.4);
 }
 
+.score-list {
+	overflow: scroll;
+	height: 300px;
+}
+
 .row {
 	line-height: 30px;
 	padding: 0px 10px;
