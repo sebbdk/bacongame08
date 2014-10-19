@@ -1,9 +1,14 @@
 var Info = {
 	"convos":{
+
+
+
+
 		"weird":{
 
 			"0":{
 				"text":function(conditions, game) {
+					game.paused = true;
 					game.speechbubble.say('Oohh, whats this?!', 3000);
 					return "You picked upsomething rather weird";
 				},

@@ -1,10 +1,15 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 var Info = {
 	"convos":{
+
+
+
+
 		"weird":{
 
 			"0":{
 				"text":function(conditions, game) {
+					game.paused = true;
 					game.speechbubble.say('Oohh, whats this?!', 3000);
 					return "You picked upsomething rather weird";
 				},
@@ -659,14 +664,59 @@ GameOver.prototype = {
 
   },
   create: function () {
+
+    function createCookie(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }
+
+
+    if(readCookie('maxScore') === null) {
+      createCookie('maxScore', 0, 31);
+    }
+
+
+    this.game.stage.backgroundColor = '#666666';
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
     this.titleText = this.game.add.text($(window).width()/2, 100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.congratsText = this.game.add.text($(window).width()/2, 200, 'You scored: ' + window.score, { font: '32px Arial', fill: '#ffffff', align: 'center'});
+
+    if(window.score > readCookie('maxScore')) {
+      createCookie('maxScore', window.score, 31);
+
+      this.congratsText = this.game.add.text($(window).width()/2, 200, 'New highscore!', { font: '32px Arial', fill: '#ffffff', align: 'center'});
+      this.congratsText.anchor.setTo(0.5, 0.5);
+    } else {
+      this.congratsText = this.game.add.text($(window).width()/2, 200, 'You scored: ' + window.score, { font: '32px Arial', fill: '#ffffff', align: 'center'});
+      this.congratsText.anchor.setTo(0.5, 0.5);
+    }
+
+
+    this.congratsText = this.game.add.text($(window).width()/2, 300, 'Your highscore is: ' + readCookie('maxScore'), { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
 
-    this.instructionText = this.game.add.text($(window).width()/2, 300, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
+    this.instructionText = this.game.add.text($(window).width()/2, 400, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
   },
   update: function () {
@@ -734,7 +784,7 @@ Play.prototype = {
 		this.entities = new Phaser.Group(this.game);
 
 		//make player
-		this.game.stage.backgroundColor = '#dddddd';
+		this.game.stage.backgroundColor = '#999999';
 		this.player = new Player(this.game,  1920/2, 1920/2);
 		this.entities.add(this.player);
 
@@ -927,7 +977,7 @@ module.exports = Preload;
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:23:59
+* @Last Modified time: 2014-10-19 21:41:01
 */
 
 var PlayState = require('./play');
@@ -961,6 +1011,13 @@ Level.prototype.create = function() {
 	this.knife = new Knife(this.game,  this.player);
 	this.entities.add(this.knife);
 
+	this.lastPun = new Date().getTime();
+	this.puns = [
+		'Stabby time!',
+		'Knife to meet you!',
+		'Bye bye!'
+	];
+
 	this.speechbubble.say([
 		'Stabby time!'
 	], 2000);
@@ -991,6 +1048,8 @@ Level.prototype.create = function() {
     	var s = this.add.sprite(x, y, clutter[Math.floor(Math.random() * clutter.length-1)] );
     	this.entities.add(s);
     }
+
+  //  self.dialog.converse("0", Info.convos.weird);
 }
 
 Level.prototype.renderScore = function() {
@@ -998,10 +1057,23 @@ Level.prototype.renderScore = function() {
 }
 
 var lastAdd = 0;
-
 Level.prototype.checkConditions = function() {
 	var self = this;
 
+	if(this.game.paused === true) {
+		return;
+	}
+
+	if(new Date().getTime() - this.lastPun > 10000) {
+		console.log('SAY SOMETHING!!!');
+		this.speechbubble.say([
+			this.puns[Math.floor(Math.random() * this.puns.length)]
+		], 2000);
+
+		this.lastPun = new Date().getTime();
+	}
+
+	
 
 	if(new Date().getTime() - lastAdd > 3000) {
 

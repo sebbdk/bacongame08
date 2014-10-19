@@ -2,7 +2,7 @@
 * @Author: sebb
 * @Date:   2014-09-18 00:04:27
 * @Last Modified by:   sebb
-* @Last Modified time: 2014-10-19 17:23:59
+* @Last Modified time: 2014-10-19 21:41:01
 */
 
 var PlayState = require('./play');
@@ -36,6 +36,13 @@ Level.prototype.create = function() {
 	this.knife = new Knife(this.game,  this.player);
 	this.entities.add(this.knife);
 
+	this.lastPun = new Date().getTime();
+	this.puns = [
+		'Stabby time!',
+		'Knife to meet you!',
+		'Bye bye!'
+	];
+
 	this.speechbubble.say([
 		'Stabby time!'
 	], 2000);
@@ -66,6 +73,8 @@ Level.prototype.create = function() {
     	var s = this.add.sprite(x, y, clutter[Math.floor(Math.random() * clutter.length-1)] );
     	this.entities.add(s);
     }
+
+  //  self.dialog.converse("0", Info.convos.weird);
 }
 
 Level.prototype.renderScore = function() {
@@ -73,10 +82,23 @@ Level.prototype.renderScore = function() {
 }
 
 var lastAdd = 0;
-
 Level.prototype.checkConditions = function() {
 	var self = this;
 
+	if(this.game.paused === true) {
+		return;
+	}
+
+	if(new Date().getTime() - this.lastPun > 10000) {
+		console.log('SAY SOMETHING!!!');
+		this.speechbubble.say([
+			this.puns[Math.floor(Math.random() * this.puns.length)]
+		], 2000);
+
+		this.lastPun = new Date().getTime();
+	}
+
+	
 
 	if(new Date().getTime() - lastAdd > 3000) {
 

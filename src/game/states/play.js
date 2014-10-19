@@ -22,7 +22,7 @@ Play.prototype = {
 		this.entities = new Phaser.Group(this.game);
 
 		//make player
-		this.game.stage.backgroundColor = '#dddddd';
+		this.game.stage.backgroundColor = '#999999';
 		this.player = new Player(this.game,  1920/2, 1920/2);
 		this.entities.add(this.player);
 
